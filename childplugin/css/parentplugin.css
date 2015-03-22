@@ -1,0 +1,8 @@
+/* CSS loaded _after_ parent plugin's CSS */
+.parentplugin h1 {
+	color: #ff0000;
+}
+.parentplugin .movies .row {
+	padding: 10px 0px;
+	border-bottom: 1px dotted #0000ff;
+}

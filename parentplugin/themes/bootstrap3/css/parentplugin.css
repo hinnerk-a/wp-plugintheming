@@ -1,0 +1,9 @@
+.parentplugin {
+	max-width: 760px;
+	margin-left: auto;
+	margin-right: auto;
+}
+.parentplugin .movies .row {
+	padding: 25px 0px;
+	border-bottom: 1px solid #000000;
+}

@@ -1,0 +1,1 @@
+<h1 class="movies-title"><?php post_type_archive_title(); ?></h1>
