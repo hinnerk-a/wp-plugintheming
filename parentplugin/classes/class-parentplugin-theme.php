@@ -3,6 +3,14 @@
 
 if ( !class_exists('ParentPlugin_Theme') ) {
 
+    /**
+     * Plugin theming example using the concept of child plugins
+     *
+     * @author Hinnerk Altenburg
+     * @copyright Copyright (c) Hinnerk Altenburg http://www.hinnerk-altenburg.de
+     * @license http://opensource.org/licenses/gpl-2.0.php GNU Public License (GPL-2.0)
+     * @since 1.0
+     */
     class ParentPlugin_Theme {
 
     	public function __construct( $theme_id ) {
