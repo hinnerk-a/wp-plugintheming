@@ -52,7 +52,7 @@ if ( !class_exists('ParentPlugin_Theme') ) {
         public function require_file_once( $name ) {
             $paths = $this->get_theme_paths();
             foreach ($paths as $path) {
-                $file = $path . $name;
+                $file = $path['path'] . $name;
                 if ( file_exists( $file ) ) {
                     require_once( $file );
                 }
@@ -62,9 +62,18 @@ if ( !class_exists('ParentPlugin_Theme') ) {
         public function locate_file( $name ) {
             $paths = $this->get_theme_paths();
             foreach ($paths as $path) {
-                $file = $path . $name;
+                $file = $path['path'] . $name;
                 if ( file_exists( $file ) ) {
                     return $file;
+                }
+            }
+        }
+
+        public function locate_url( $name ) {
+            $paths = $this->get_theme_paths();
+            foreach ($paths as $path) {
+                if ( file_exists( $path['path'] . $name ) ) {
+                    return $path['url'] . $name;
                 }
             }
         }
@@ -127,21 +136,43 @@ if ( !class_exists('ParentPlugin_Theme') ) {
             $theme_paths = array();
             $active_plugin_theme = $this->get_theme( $this->theme_id );
 
-            array_push( $theme_paths, $active_plugin_theme['path'] );
+            array_push( $theme_paths, array( 'path' => $active_plugin_theme['path'], 'url' => $active_plugin_theme['url'] ) );
 
             if ( $active_plugin_theme['use_theme_dir'] ) {
                 $theme_mods_path = get_stylesheet_directory() . '/' . $this->plugin_slug . '/';
+                $theme_mods_url  = get_stylesheet_directory_uri() . '/' . $this->plugin_slug . '/';
                 if ( is_dir( $theme_mods_path ) ) {
-                    array_unshift( $theme_paths, $theme_mods_path );
+                    array_unshift( $theme_paths, array( 'path' => $theme_mods_path, 'url' => $theme_mods_url ) );
                 }
             }
 
             if ( $active_plugin_theme['parent_id'] ) {
                 $parent_theme = $this->get_theme( $active_plugin_theme['parent_id'] );
-                array_push( $theme_paths, $parent_theme['path'] );
+                array_push( $theme_paths, array( 'path' => $parent_theme['path'], 'url' => $parent_theme['url'] ) );
+            }
+            return $theme_paths;
+        }
+
+        public function get_theme_urls() {
+            $theme_urls = array();
+            $active_plugin_theme = $this->get_theme( $this->theme_id );
+
+            array_push( $theme_urls, $active_plugin_theme['url'] );
+
+            if ( $active_plugin_theme['use_theme_dir'] ) {
+                $theme_mods_path = get_stylesheet_directory() . '/' . $this->plugin_slug . '/';
+                $theme_mods_urls = get_stylesheet_directory_uri() . '/' . $this->plugin_slug . '/';
+                if ( is_dir( $theme_mods_path ) ) {
+                    array_unshift( $theme_urls, $theme_mods_urls );
+                }
             }
 
-            return $theme_paths;
+            if ( $active_plugin_theme['parent_id'] ) {
+                $parent_theme = $this->get_theme( $active_plugin_theme['parent_id'] );
+                array_push( $theme_urls, $parent_theme['url'] );
+            }
+
+            return $theme_urls;
         }
 
     }
